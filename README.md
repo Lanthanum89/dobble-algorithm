@@ -5,6 +5,7 @@ A JavaScript implementation of the Dobble card generation algorithm based on pro
 ## What is Dobble?
 
 Dobble (also known as Spot It!) is a card game where:
+
 - Each card has several symbols on it
 - **Any two cards have exactly one symbol in common**
 - Players race to find the matching symbol between cards
@@ -14,11 +15,13 @@ Dobble (also known as Spot It!) is a card game where:
 The algorithm uses mathematical properties of projective planes:
 
 For a prime number `p`:
+
 - Total cards: `p² + p + 1`
 - Symbols per card: `p + 1`
 - Total unique symbols: `p² + p + 1`
 
-### Example with p=7:
+### Example with p=7
+
 - 57 cards (7² + 7 + 1)
 - 8 symbols per card (7 + 1)
 - 57 unique symbols total
@@ -62,6 +65,7 @@ node dobble.js
 ### Interactive HTML Demo
 
 Open `index.html` in a web browser to see an interactive card generator with emoji symbols. You can:
+
 - Select different prime numbers to generate different set sizes
 - See cards rendered beautifully with emoji symbols
 - Hover over cards to see the interactive animations
@@ -71,25 +75,33 @@ Open `index.html` in a web browser to see an interactive card generator with emo
 ## API
 
 ### `generateDobbleCards(p)`
+
 Generates a complete Dobble card set.
+
 - **Parameters:** `p` (number) - A prime number
 - **Returns:** Array of cards, where each card is an array of symbol IDs
 - **Throws:** Error if `p` is not prime
 
 ### `verifyDobbleCards(cards)`
+
 Verifies that all cards follow the Dobble rule.
+
 - **Parameters:** `cards` (Array) - Array of cards to verify
 - **Returns:** Object with verification results
 
 ### `convertToSymbols(cards, symbols)`
+
 Converts numeric symbol IDs to custom labels.
+
 - **Parameters:**
   - `cards` (Array) - Cards with numeric IDs
   - `symbols` (Array) - Array of symbol labels
 - **Returns:** Cards with custom labels
 
 ### `isPrime(n)`
+
 Checks if a number is prime.
+
 - **Parameters:** `n` (number) - Number to check
 - **Returns:** Boolean
 
@@ -111,6 +123,7 @@ The original Dobble game uses p=7, resulting in 55 cards with 8 symbols each (wi
 The algorithm uses finite projective plane geometry, specifically an affine plane extended with a "line at infinity":
 
 ### Symbol Structure
+
 - **Direction symbols** (0 to p): Represent "points at infinity" where parallel lines meet
   - Symbol 0: Where all vertical lines meet
   - Symbols 1 to p: Where lines of each slope (0 to p-1) meet
@@ -135,6 +148,7 @@ The algorithm uses finite projective plane geometry, specifically an affine plan
 ### Why It Works
 
 The construction ensures that:
+
 - Any two non-parallel affine lines intersect at exactly one affine point
 - Any two lines with the same slope (including verticals) share their direction symbol
 - The line at infinity intersects each affine/vertical line at its direction symbol
