@@ -1,0 +1,20 @@
+{
+  "name": "dobble-algorithm",
+  "version": "1.0.0",
+  "description": "JavaScript implementation of the Dobble (Spot It!) card generation algorithm",
+  "main": "dobble.js",
+  "scripts": {
+    "start": "node dobble.js",
+    "test": "node dobble.js"
+  },
+  "keywords": [
+    "dobble",
+    "spot-it",
+    "card-game",
+    "projective-plane",
+    "algorithm",
+    "combinatorics"
+  ],
+  "author": "",
+  "license": "MIT"
+}
