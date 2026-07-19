@@ -1,6 +1,6 @@
-# Dobble Algorithm (Spot It!)
+# My Dobble (Spot It!) - Custom Photo Cards PWA
 
-A JavaScript implementation of the Dobble card generation algorithm based on projective plane geometry.
+A JavaScript implementation of the Dobble card generation algorithm based on projective plane geometry, plus an installable Progressive Web App that lets you build your own Dobble deck from your own photos and play it right in the browser — fully offline.
 
 ## What is Dobble?
 
@@ -25,6 +25,35 @@ For a prime number `p`:
 - 57 cards (7² + 7 + 1)
 - 8 symbols per card (7 + 1)
 - 57 unique symbols total
+
+## Progressive Web App: Make Your Own Deck
+
+This repo includes an installable PWA (`index.html` + `app.js` + `storage.js` + `sw.js`) that turns your own photos into a playable Dobble deck.
+
+### Try it locally
+
+Because the app registers a service worker and uses `createImageBitmap`, it needs to be served over HTTP(S) rather than opened as a `file://` URL:
+
+```bash
+npm run serve
+# then open http://localhost:8080
+```
+
+Any static file server works (`npx http-server`, `python3 -m http.server`, etc.) - there's no build step and no backend.
+
+### How it works
+
+1. **Choose a deck size** - pick a prime `p`; the app shows how many cards and how many photos you'll need (`p² + p + 1` photos, `p + 1` per card).
+2. **Add your photos** - tap to choose files, or drag-and-drop / paste images. Photos are downscaled and stored locally in **IndexedDB** on your device - nothing is uploaded anywhere.
+3. **Generate My Dobble Deck** - the app randomly assigns your photos to symbol slots and runs the same projective-plane algorithm from `dobble.js` to build a deck where any two cards share exactly one photo.
+4. **View Deck** - see every card rendered as a circular Dobble card with your photos scattered in a randomized, non-overlapping layout (shuffle the layout for a new look, or print physical cards).
+5. **Play** - a "tower" style single-player mode: spot the one photo shared between the center card and the top card of the pile, tap it, and race to clear the whole deck. Tracks correct taps, mistakes, and cards remaining.
+
+Your photos and generated deck persist in IndexedDB, so closing the tab (or installing the app to your home screen and going offline) keeps everything intact until you hit **Reset Everything**.
+
+### Installing as an app
+
+Visit the page in a supported browser (Chrome, Edge, Safari on iOS via "Add to Home Screen", etc.) and use the install prompt/banner, or your browser's "Install app" menu option. Once installed, the service worker caches the app shell so it keeps working with no network connection - only the initial photo upload needs the device to render/store your images, which also happens fully offline.
 
 ## Usage
 

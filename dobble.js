@@ -141,8 +141,8 @@ function printCards(cards) {
     });
 }
 
-// Example usage
-if (require.main === module) {
+// Example usage (Node CLI only)
+if (typeof require !== 'undefined' && typeof module !== 'undefined' && require.main === module) {
     const p = 7; // Use prime number 7
     
     console.log(`Generating Dobble cards for p = ${p}`);
@@ -179,11 +179,21 @@ if (require.main === module) {
     printCards(emojiCards);
 }
 
-// Export functions for use in other modules
-module.exports = {
-    generateDobbleCards,
-    verifyDobbleCards,
-    convertToSymbols,
-    printCards,
-    isPrime
-};
+// Export functions for use in other modules (Node) or attach to window (browser)
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        generateDobbleCards,
+        verifyDobbleCards,
+        convertToSymbols,
+        printCards,
+        isPrime
+    };
+} else if (typeof window !== 'undefined') {
+    window.Dobble = {
+        generateDobbleCards,
+        verifyDobbleCards,
+        convertToSymbols,
+        printCards,
+        isPrime
+    };
+}

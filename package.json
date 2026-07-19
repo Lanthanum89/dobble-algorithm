@@ -5,7 +5,8 @@
   "main": "dobble.js",
   "scripts": {
     "start": "node dobble.js",
-    "test": "node dobble.js"
+    "test": "node dobble.js",
+    "serve": "npx --yes http-server -c-1 -p 8080 ."
   },
   "keywords": [
     "dobble",
@@ -13,7 +14,9 @@
     "card-game",
     "projective-plane",
     "algorithm",
-    "combinatorics"
+    "combinatorics",
+    "pwa",
+    "photo-upload"
   ],
   "author": "",
   "license": "MIT"
