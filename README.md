@@ -1,6 +1,6 @@
 # My Dobble (Spot It!) - Custom Photo Cards PWA
 
-A JavaScript implementation of the Dobble card generation algorithm based on projective plane geometry, plus an installable Progressive Web App that lets you build your own Dobble deck from your own photos and play it right in the browser — fully offline.
+A TypeScript implementation of the Dobble card generation algorithm based on projective plane geometry, plus an installable Progressive Web App (built with Vite) that lets you build your own Dobble deck from your own photos and play it right in the browser — fully offline.
 
 ## What is Dobble?
 
@@ -28,25 +28,36 @@ For a prime number `p`:
 
 ## Progressive Web App: Make Your Own Deck
 
-This repo includes an installable PWA (`index.html` + `app.js` + `storage.js` + `sw.js`) that turns your own photos into a playable Dobble deck.
+This repo is a [Vite](https://vite.dev) + TypeScript project. The app lives in `src/` (`app.ts`, `storage.ts`, `layout.ts`, `dobble.ts`) and `index.html`; `vite-plugin-pwa` generates the web manifest and service worker at build time.
 
-### Try it locally
-
-Because the app registers a service worker and uses `createImageBitmap`, it needs to be served over HTTP(S) rather than opened as a `file://` URL:
+### Setup
 
 ```bash
-npm run serve
-# then open http://localhost:8080
+npm install
 ```
 
-Any static file server works (`npx http-server`, `python3 -m http.server`, etc.) - there's no build step and no backend.
+### Develop
+
+```bash
+npm run dev
+# opens a dev server (usually http://localhost:5173) with instant hot-reload
+```
+
+### Build & preview a production bundle
+
+```bash
+npm run build     # type-checks with tsc, then bundles to dist/
+npm run preview   # serves dist/ locally, including the real service worker/manifest
+```
+
+Deploying is just publishing the contents of `dist/` (e.g. GitHub Pages, Netlify, any static host) - see the project's CI/CD docs for wiring a build step into your deploy of choice.
 
 ### How it works
 
 1. **Choose a deck size** - pick a prime `p`; the app shows how many cards and how many photos you'll need (`p² + p + 1` photos, `p + 1` per card).
 2. **Add your photos** - tap to choose files, or drag-and-drop / paste images. Photos are downscaled and stored locally in **IndexedDB** on your device - nothing is uploaded anywhere.
-3. **Generate My Dobble Deck** - the app randomly assigns your photos to symbol slots and runs the same projective-plane algorithm from `dobble.js` to build a deck where any two cards share exactly one photo.
-4. **View Deck** - see every card rendered as a circular Dobble card with your photos scattered in a randomized, non-overlapping layout (shuffle the layout for a new look, or print physical cards).
+3. **Generate My Dobble Deck** - the app randomly assigns your photos to symbol slots and runs the same projective-plane algorithm from `src/dobble.ts` to build a deck where any two cards share exactly one photo.
+4. **View Deck** - see every card rendered as a circular Dobble card with your photos packed into a randomized, non-overlapping layout (`src/layout.ts`) - shuffle the layout for a new look, or print physical cards.
 5. **Play** - a "tower" style single-player mode: spot the one photo shared between the center card and the top card of the pile, tap it, and race to clear the whole deck. Tracks correct taps, mistakes, and cards remaining.
 
 Your photos and generated deck persist in IndexedDB, so closing the tab (or installing the app to your home screen and going offline) keeps everything intact until you hit **Reset Everything**.
@@ -59,8 +70,8 @@ Visit the page in a supported browser (Chrome, Edge, Safari on iOS via "Add to H
 
 ### Basic Usage
 
-```javascript
-const { generateDobbleCards, verifyDobbleCards } = require('./dobble');
+```typescript
+import { generateDobbleCards, verifyDobbleCards } from './src/dobble.ts';
 
 // Generate cards using prime number 7
 const cards = generateDobbleCards(7);
@@ -73,31 +84,31 @@ console.log('Valid:', verification.success);
 
 ### With Custom Symbols
 
-```javascript
-const { generateDobbleCards, convertToSymbols } = require('./dobble');
+```typescript
+import { generateDobbleCards, convertToSymbols } from './src/dobble.ts';
 
 const cards = generateDobbleCards(3); // Smaller set: 13 cards
 
-const symbols = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', 
+const symbols = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻',
                  '🐼', '🐨', '🐯', '🦁', '🐮', '🐷'];
 
 const emojiCards = convertToSymbols(cards, symbols);
 console.log(emojiCards);
 ```
 
-### Run the Example
+### Run the CLI Demo
 
 ```bash
-node dobble.js
+npm run demo
 ```
 
-### Interactive HTML Demo
+Runs `src/cli.ts` (via [`tsx`](https://github.com/privatenumber/tsx), no compile step needed) to print a sample deck and verification results to the console, same as the original `node dobble.js` demo.
 
-Open `index.html` in a web browser to see an interactive card generator with emoji symbols. You can:
+### Type-check only
 
-- Select different prime numbers to generate different set sizes
-- See cards rendered beautifully with emoji symbols
-- Hover over cards to see the interactive animations
+```bash
+npm test
+```
 
 ## Example Output
 
